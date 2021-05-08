@@ -1,4 +1,4 @@
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Item {
 
@@ -6,9 +6,9 @@ public class Item {
 
     private String name;
     private String content;
-    private final LocalDate creationDate;
+    private final LocalDateTime creationDate;
 
-    public Item(String name, String content, LocalDate creationDate) {
+    public Item(String name, String content, LocalDateTime creationDate) {
         this.name = name;
         this.content = content;
         this.creationDate = creationDate;
@@ -39,7 +39,7 @@ public class Item {
         return content;
     }
 
-    public LocalDate getCreationDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 }
