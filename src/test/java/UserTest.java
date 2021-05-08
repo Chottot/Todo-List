@@ -61,7 +61,7 @@ public class UserTest {
 
     @Test
     public void user_email_valid_if_good_format(){
-        User user = new User("", "", "test@test.test", "", LocalDate.now());
+        User user = new User("", "", "test@gmail.com", "", LocalDate.now());
         Assert.assertTrue(user.isEmailValid());
     }
 
