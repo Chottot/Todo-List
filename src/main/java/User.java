@@ -1,6 +1,13 @@
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import org.apache.commons.validator.routines.EmailValidator;
 
 public class User {
+
+    public static final int MINIMUM_PASSWORD_LENGTH = 8;
+    public static final int MAXIMUM_PASSWORD_LENGTH = 40;
+    public static final int MINIMUM_AGE = 13;
+
     private final String firstName;
     private final String lastName;
     private final String email;
@@ -16,7 +23,7 @@ public class User {
     }
 
     public boolean isBirthDateValid(LocalDate currentDate){
-        return true;
+        return birthDate.until(currentDate, ChronoUnit.YEARS) >= MINIMUM_AGE;
     }
 
     public boolean isBirthDateValid(){
@@ -24,11 +31,11 @@ public class User {
     }
 
     public boolean isEmailValid(){
-        return !email.isEmpty();
+        return EmailValidator.getInstance().isValid(email);
     }
 
     public boolean isPasswordValid(){
-        return !password.isEmpty();
+        return password.length() >= MINIMUM_PASSWORD_LENGTH && password.length() <= MAXIMUM_PASSWORD_LENGTH;
     }
 
     public boolean isFirstNameValid(){
