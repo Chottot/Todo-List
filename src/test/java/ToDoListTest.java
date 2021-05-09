@@ -1,6 +1,7 @@
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.time.LocalDateTime;
@@ -8,6 +9,8 @@ import java.time.LocalDateTime;
 public class ToDoListTest {
     public ToDoList toDoList;
     public Item item1, item11, item2;
+    @Mock
+    private EmailSenderService emailSenderService;
 
     @Before
     public void reset(){
@@ -64,7 +67,6 @@ public class ToDoListTest {
 
     @Test
     public void add_8_item_should_send_an_email(){
-
         for (int i = 8; i >= 0; i--) {
             Assert.assertTrue( toDoList.addItem(new Item("test"+i, "", LocalDateTime.now().minusMinutes(30L *i))) );
         }
