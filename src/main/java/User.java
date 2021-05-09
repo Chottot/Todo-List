@@ -47,7 +47,7 @@ public class User {
         this(firstName, lastName, email, password, birthDate, new ToDoList());
     }
 
-    public void addItem(Item item){
+    public void addItem(Item item) throws ItemsCapacityException, TimeBetweenInsertionException, ItemNameExistException {
         toDoList.addItem(item);
         if( toDoList.shouldSendEmail()){
             sendEmail();

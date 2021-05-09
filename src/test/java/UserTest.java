@@ -114,7 +114,11 @@ public class UserTest {
         User user = Mockito.spy(User.class);
 
         for (int i = 7; i >= 0; i--) {
-            user.addItem(new Item("item"+i, "", LocalDateTime.now().minusHours(i)));
+
+            int finalI = i;
+            assertDoesNotThrow(
+                    () -> user.addItem(new Item("item"+ finalI, "", LocalDateTime.now().minusHours(finalI)))
+            );
         }
 
         Mockito.verify(user,  Mockito.times(1)).sendEmail();
