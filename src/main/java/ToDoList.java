@@ -4,11 +4,16 @@ import java.util.ArrayList;
 public class ToDoList {
     public static final long MINIMUM_CREATION_TIME = 30;
     public static final short MAXIMUM_ITEM_LIST_SIZE = 10;
+    public static final short ITEM_LIST_SIZE_EMAIL_TRIGGER = 8;
 
     private final ArrayList<Item> itemList;
 
     public ToDoList() {
-        this.itemList = new ArrayList<>(MAXIMUM_ITEM_LIST_SIZE);
+        this( new ArrayList<>(MAXIMUM_ITEM_LIST_SIZE) );
+    }
+
+    public ToDoList(ArrayList<Item> itemList) {
+        this.itemList = itemList;
     }
 
     public boolean addItem(Item item){
@@ -32,8 +37,11 @@ public class ToDoList {
             return false;
         }
         itemList.add(item);
-
         return true;
+    }
+
+    public boolean shouldSendEmail(){
+        return itemList.size() == ITEM_LIST_SIZE_EMAIL_TRIGGER;
     }
 
 }

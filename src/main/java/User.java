@@ -14,6 +14,7 @@ public class User {
     private String email;
     private String password;
     private LocalDate birthDate;
+    private final ToDoList toDoList;
 
     public User(){
         this.firstName = "";
@@ -21,6 +22,21 @@ public class User {
         this.email = "";
         this.password = "";
         this.birthDate = null;
+        this.toDoList = new ToDoList();
+    }
+
+    public User(@NotNull String firstName,
+                @NotNull String lastName,
+                @NotNull String email,
+                @NotNull String password,
+                @NotNull LocalDate birthDate,
+                @NotNull ToDoList toDoList) throws UserException{
+        setFirstName(firstName);
+        setLastName(lastName);
+        setEmail(email);
+        setPassword(password);
+        setBirthDate(birthDate);
+        this.toDoList = toDoList;
     }
 
     public User(@NotNull String firstName,
@@ -28,11 +44,18 @@ public class User {
                 @NotNull String email,
                 @NotNull String password,
                 @NotNull LocalDate birthDate) throws UserException{
-        setFirstName(firstName);
-        setLastName(lastName);
-        setEmail(email);
-        setPassword(password);
-        setBirthDate(birthDate);
+        this(firstName, lastName, email, password, birthDate, new ToDoList());
+    }
+
+    public void addItem(Item item){
+        toDoList.addItem(item);
+        if( toDoList.shouldSendEmail()){
+            sendEmail();
+        }
+    }
+
+    public void sendEmail(){
+        EmailSenderService.sendEmail();
     }
 
     public void setFirstName(@NotNull String firstName) throws FirstNameEmptyException {

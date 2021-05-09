@@ -1,7 +1,9 @@
 import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class UserTest {
 
@@ -105,6 +107,17 @@ public class UserTest {
     public void user_birthDate_valid_if_more_than_13_year_old() throws TooYoungException {
         User user = new User();
         user.setBirthDate(LocalDate.now().minusYears(14));
+    }
+
+    @Test
+    public void should_send_an_email_when_the_8th_item_is_added(){
+        User user = Mockito.spy(User.class);
+
+        for (int i = 7; i >= 0; i--) {
+            user.addItem(new Item("item"+i, "", LocalDateTime.now().minusHours(i)));
+        }
+
+        Mockito.verify(user,  Mockito.times(1)).sendEmail();
     }
 
 
