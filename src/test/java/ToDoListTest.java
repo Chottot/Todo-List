@@ -1,14 +1,15 @@
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ToDoListTest {
     public ToDoList toDoList;
     public Item item1, item11, item2;
 
-    @Before
+    @BeforeEach
     public void reset(){
         toDoList = new ToDoList();
         item1 = new Item("item1", "", LocalDateTime.now());
@@ -18,7 +19,7 @@ public class ToDoListTest {
 
     @Test
     public void add_item_should_succeed(){
-        Assert.assertTrue( toDoList.addItem(item1));
+        assertTrue( toDoList.addItem(item1));
     }
 
     @Test
@@ -26,7 +27,7 @@ public class ToDoListTest {
         Item item_25_min_ago = new Item("item_25", "", LocalDateTime.now().minusMinutes(29));
         Item item = new Item("item", "", LocalDateTime.now());
         toDoList.addItem(item_25_min_ago);
-        Assert.assertFalse(toDoList.addItem(item));
+        assertFalse(toDoList.addItem(item));
     }
 
     @Test
@@ -34,7 +35,7 @@ public class ToDoListTest {
         Item item_31_min_ago = new Item("item_25", "", LocalDateTime.now().minusMinutes(31));
         Item item = new Item("item", "", LocalDateTime.now());
         toDoList.addItem(item_31_min_ago);
-        Assert.assertTrue(toDoList.addItem(item));
+        assertTrue(toDoList.addItem(item));
     }
 
     @Test
@@ -42,7 +43,7 @@ public class ToDoListTest {
         Item item_31_min_ago = new Item("item_25", "", LocalDateTime.now().minusMinutes(30));
         Item item = new Item("item", "", LocalDateTime.now());
         toDoList.addItem(item_31_min_ago);
-        Assert.assertTrue(toDoList.addItem(item));
+        assertTrue(toDoList.addItem(item));
     }
 
     @Test
@@ -50,7 +51,7 @@ public class ToDoListTest {
         Item item = new Item("item", "", LocalDateTime.now().minusMinutes(31));
         Item item2 = new Item("item", "", LocalDateTime.now());
         toDoList.addItem(item);
-        Assert.assertFalse( toDoList.addItem(item2));
+        assertFalse( toDoList.addItem(item2));
     }
 
     @Test
@@ -58,15 +59,15 @@ public class ToDoListTest {
         for (int i = 9; i >= 0; i--) {
             toDoList.addItem(new Item("test"+i, "", LocalDateTime.now().minusMinutes(30L *i)));
         }
-        Assert.assertFalse( toDoList.addItem(new Item("test11", "", LocalDateTime.now())) );
+        assertFalse( toDoList.addItem(new Item("test11", "", LocalDateTime.now())) );
     }
 
     @Test
     public void add_8_item_should_ask_to_send_an_email(){
         for (int i = 7; i >= 0; i--) {
-            Assert.assertTrue( toDoList.addItem(new Item("test"+i, "", LocalDateTime.now().minusMinutes(30L *i))) );
+            assertTrue( toDoList.addItem(new Item("test"+i, "", LocalDateTime.now().minusMinutes(30L *i))) );
         }
-        Assert.assertTrue( toDoList.shouldSendEmail());
+        assertTrue( toDoList.shouldSendEmail());
     }
 
 }
