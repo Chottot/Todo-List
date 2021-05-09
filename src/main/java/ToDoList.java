@@ -16,15 +16,15 @@ public class ToDoList {
         this.itemList = itemList;
     }
 
-    public boolean addItem(Item item){
+    public void addItem(Item item) throws ItemsCapacityException, ItemNameExistException, TimeBetweenInsertionException {
         if(itemList.size() >= MAXIMUM_ITEM_LIST_SIZE){
-            return false;
+            throw new ItemsCapacityException();
         }
 
         long minimumTime = Long.MAX_VALUE;
         for (Item i:itemList) {
             if( i.getName().equals( item.getName())){
-                return false;
+                throw new ItemNameExistException(i.getName());
             }else{
                 long time = i.getCreationDate().until(item.getCreationDate(), ChronoUnit.MINUTES);
                 if(time < minimumTime){
@@ -34,10 +34,9 @@ public class ToDoList {
         }
 
         if( minimumTime < MINIMUM_CREATION_TIME){
-            return false;
+            throw new TimeBetweenInsertionException();
         }
         itemList.add(item);
-        return true;
     }
 
     public boolean shouldSendEmail(){

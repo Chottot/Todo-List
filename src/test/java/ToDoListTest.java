@@ -1,5 +1,7 @@
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 
 import java.time.LocalDateTime;
 
@@ -18,56 +20,59 @@ public class ToDoListTest {
     }
 
     @Test
-    public void add_item_should_succeed(){
-        assertTrue( toDoList.addItem(item1));
+    public void add_item_should_succeed() {
+        assertDoesNotThrow(() -> toDoList.addItem(item1));
     }
 
     @Test
-    public void add_item_should_failed_added_before_30_min(){
+    public void add_item_should_failed_added_before_30_min() throws ItemsCapacityException, TimeBetweenInsertionException, ItemNameExistException {
         Item item_25_min_ago = new Item("item_25", "", LocalDateTime.now().minusMinutes(29));
         Item item = new Item("item", "", LocalDateTime.now());
         toDoList.addItem(item_25_min_ago);
-        assertFalse(toDoList.addItem(item));
+        assertThrows(TimeBetweenInsertionException.class, () -> toDoList.addItem(item));
     }
 
     @Test
-    public void add_item_should_succeed_added_after_more_than_30_min(){
+    public void add_item_should_succeed_added_after_more_than_30_min() throws ItemsCapacityException, TimeBetweenInsertionException, ItemNameExistException {
         Item item_31_min_ago = new Item("item_25", "", LocalDateTime.now().minusMinutes(31));
         Item item = new Item("item", "", LocalDateTime.now());
         toDoList.addItem(item_31_min_ago);
-        assertTrue(toDoList.addItem(item));
+        assertDoesNotThrow(() -> toDoList.addItem(item));
     }
 
     @Test
-    public void add_item_should_succeed_added_after_30_min(){
+    public void add_item_should_succeed_added_after_30_min() throws ItemsCapacityException, TimeBetweenInsertionException, ItemNameExistException {
         Item item_31_min_ago = new Item("item_25", "", LocalDateTime.now().minusMinutes(30));
         Item item = new Item("item", "", LocalDateTime.now());
         toDoList.addItem(item_31_min_ago);
-        assertTrue(toDoList.addItem(item));
+        assertDoesNotThrow(() -> toDoList.addItem(item));
     }
 
     @Test
-    public void add_2_item_with_same_name_should_failed(){
+    public void add_2_item_with_same_name_should_failed() throws ItemsCapacityException, TimeBetweenInsertionException, ItemNameExistException {
         Item item = new Item("item", "", LocalDateTime.now().minusMinutes(31));
         Item item2 = new Item("item", "", LocalDateTime.now());
         toDoList.addItem(item);
-        assertFalse( toDoList.addItem(item2));
+        assertThrows(ItemNameExistException.class, () -> toDoList.addItem(item2));
     }
 
     @Test
-    public void add_11_item_should_failed(){
+    public void add_11_item_should_failed() throws ItemsCapacityException, TimeBetweenInsertionException, ItemNameExistException {
         for (int i = 9; i >= 0; i--) {
             toDoList.addItem(new Item("test"+i, "", LocalDateTime.now().minusMinutes(30L *i)));
         }
-        assertFalse( toDoList.addItem(new Item("test11", "", LocalDateTime.now())) );
+        assertThrows(ItemsCapacityException.class, () -> toDoList.addItem(new Item("test11", "", LocalDateTime.now())) );
     }
 
     @Test
-    public void add_8_item_should_ask_to_send_an_email(){
+    public void add_8_item_should_ask_to_send_an_email() throws ItemsCapacityException, TimeBetweenInsertionException, ItemNameExistException {
         for (int i = 7; i >= 0; i--) {
-            assertTrue( toDoList.addItem(new Item("test"+i, "", LocalDateTime.now().minusMinutes(30L *i))) );
+            int finalI = i;
+            assertDoesNotThrow(() -> toDoList.addItem(
+                    new Item("test"+ finalI, "", LocalDateTime.now().minusMinutes(30L * finalI))
+            ));
         }
-        assertTrue( toDoList.shouldSendEmail());
+        toDoList.shouldSendEmail();
     }
 
 }
