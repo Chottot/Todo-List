@@ -4,45 +4,52 @@ import java.time.LocalDateTime;
 
 public class ItemTest {
 
+
+    @Test
+    public void item_should_be_invalid_with_null_name(){
+        Item item = new Item("", "", LocalDateTime.now());
+        Assert.assertThrows(IllegalArgumentException.class, () -> item.setName(null));
+    }
+
     @Test
     public void item_should_be_invalid_with_empty_name(){
         Item item = new Item("", "", LocalDateTime.now());
-        Assert.assertFalse(item.setName(""));
+        Assert.assertThrows(NameEmptyException.class, () -> item.setName(""));
     }
 
     @Test
-    public void item_should_be_valid_with_not_empty_name(){
+    public void item_should_be_valid_with_not_empty_name() throws NameEmptyException {
         Item item = new Item("tes", "", LocalDateTime.now());
-        Assert.assertTrue(item.setName("test"));
+        item.setName("test");
     }
 
     @Test
-    public void item_should_be_valid_no_content(){
+    public void item_should_be_valid_no_content() throws ContentToLongException {
         Item item = new Item("test", "", LocalDateTime.now());
-        Assert.assertTrue(item.setContent(""));
+        item.setContent("");
     }
 
     @Test
-    public void item_should_be_valid_with_content_of_1000_length(){
+    public void item_should_be_valid_with_content_of_1000_length() throws ContentToLongException {
         Item item = new Item("test", "", LocalDateTime.now());
 
         String content = "";
         for (int i = 0; i < Item.MAXIMUM_CONTENT_LENGTH ; i++) {
             content = content.concat("a");
         }
-        System.out.println(content.length());
-        Assert.assertTrue(item.setContent(content));
+
+        item.setContent(content);
     }
 
     @Test
-    public void item_should_be_valid_with_content_of_less_than_1000_length(){
+    public void item_should_be_valid_with_content_of_less_than_1000_length() throws ContentToLongException {
         Item item = new Item("test", "", LocalDateTime.now());
 
         String content = "";
         for (int i = 0; i < Item.MAXIMUM_CONTENT_LENGTH - 1; i++) {
             content = content.concat("a");
         }
-        Assert.assertTrue(item.setContent(content));
+        item.setContent(content);
     }
 
     @Test
@@ -53,7 +60,9 @@ public class ItemTest {
         for (int i = 0; i <= Item.MAXIMUM_CONTENT_LENGTH + 1; i++) {
             content = content.concat("a");
         }
-        Assert.assertFalse(item.setContent(content));
+
+        String finalContent = content;
+        Assert.assertThrows( ContentToLongException.class, () -> item.setContent(finalContent));
     }
 
 }
