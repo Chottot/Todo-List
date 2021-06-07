@@ -1,6 +1,6 @@
 public class EmailSenderService {
 
-    public void sendEmail(){
+    public static void sendEmail(){
 
     }
 }
