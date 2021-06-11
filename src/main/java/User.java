@@ -1,7 +1,7 @@
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+
 import org.apache.commons.validator.routines.EmailValidator;
-import org.jetbrains.annotations.NotNull;
 
 public class User {
 
@@ -16,7 +16,7 @@ public class User {
     private LocalDate birthDate;
     private final ToDoList toDoList;
 
-    public User(){
+    public User() {
         this.firstName = "";
         this.lastName = "";
         this.email = "";
@@ -25,12 +25,12 @@ public class User {
         this.toDoList = new ToDoList();
     }
 
-    public User(@NotNull String firstName,
-                @NotNull String lastName,
-                @NotNull String email,
-                @NotNull String password,
-                @NotNull LocalDate birthDate,
-                @NotNull ToDoList toDoList) throws UserException{
+    public User(String firstName,
+                String lastName,
+                String email,
+                String password,
+                LocalDate birthDate,
+                ToDoList toDoList) throws UserException {
         setFirstName(firstName);
         setLastName(lastName);
         setEmail(email);
@@ -39,65 +39,72 @@ public class User {
         this.toDoList = toDoList;
     }
 
-    public User(@NotNull String firstName,
-                @NotNull String lastName,
-                @NotNull String email,
-                @NotNull String password,
-                @NotNull LocalDate birthDate) throws UserException{
+    public User(String firstName,
+                String lastName,
+                String email,
+                String password,
+                LocalDate birthDate) throws UserException {
         this(firstName, lastName, email, password, birthDate, new ToDoList());
     }
 
     public void addItem(Item item) throws ItemsCapacityException, TimeBetweenInsertionException, ItemNameExistException {
         toDoList.addItem(item);
-        if( toDoList.shouldSendEmail()){
+        if (toDoList.shouldSendEmail()) {
             sendEmail();
         }
     }
 
-    public void sendEmail(){
+    public void sendEmail() {
         EmailSenderService.sendEmail();
     }
 
-    public void setFirstName(@NotNull String firstName) throws FirstNameEmptyException {
-        if(firstName == null){
+    public void setFirstName(String firstName) throws FirstNameEmptyException {
+        if (firstName == null) {
             throw new IllegalArgumentException();
-        }
-        else if( firstName.isEmpty()){
+        } else if (firstName.isEmpty()) {
             throw new FirstNameEmptyException();
-        }else{
+        } else {
             this.firstName = firstName;
         }
     }
 
-    public void setLastName(@NotNull String lastName) throws LastNameEmptyException {
-        if( lastName.isEmpty()){
+    public void setLastName(String lastName) throws LastNameEmptyException {
+        if (lastName == null) {
+            throw new IllegalArgumentException();
+        } else if (lastName.isEmpty()) {
             throw new LastNameEmptyException();
-        }else {
+        } else {
             this.lastName = lastName;
         }
     }
 
-    public void setEmail(@NotNull String email) throws EmailInvalidException {
-        if ( !EmailValidator.getInstance().isValid(email) ){
+    public void setEmail(String email) throws EmailInvalidException {
+        if (email == null) {
+            throw new IllegalArgumentException();
+        } else if (!EmailValidator.getInstance().isValid(email)) {
             throw new EmailInvalidException(email);
-        }else {
+        } else {
             this.email = email;
         }
     }
 
-    public void setPassword(@NotNull String password) throws PasswordTooShortException, PasswordTooLongException {
-        if(password.length() < MINIMUM_PASSWORD_LENGTH){
+    public void setPassword(String password) throws PasswordTooShortException, PasswordTooLongException {
+        if (password == null) {
+            throw new IllegalArgumentException();
+        } else if (password.length() < MINIMUM_PASSWORD_LENGTH) {
             throw new PasswordTooShortException();
-        }else if (password.length() > MAXIMUM_PASSWORD_LENGTH){
+        } else if (password.length() > MAXIMUM_PASSWORD_LENGTH) {
             throw new PasswordTooLongException();
         }
         this.password = password;
     }
 
-    public void setBirthDate(@NotNull LocalDate birthDate) throws TooYoungException {
-        if( birthDate.until(LocalDate.now(), ChronoUnit.YEARS) < MINIMUM_AGE ){
+    public void setBirthDate(LocalDate birthDate) throws TooYoungException {
+        if (birthDate == null) {
+            throw new IllegalArgumentException();
+        } else if (birthDate.until(LocalDate.now(), ChronoUnit.YEARS) < MINIMUM_AGE) {
             throw new TooYoungException();
-        }else {
+        } else {
             this.birthDate = birthDate;
         }
     }

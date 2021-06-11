@@ -1,5 +1,3 @@
-import org.jetbrains.annotations.NotNull;
-
 import java.time.LocalDateTime;
 
 public class Item {
@@ -16,18 +14,20 @@ public class Item {
         this.creationDate = creationDate;
     }
 
-    public void setName(@NotNull String name) throws NameEmptyException {
-        if( name.isEmpty() ){
+    public void setName(String name) throws NameEmptyException {
+        if (name == null) {
+            throw new IllegalArgumentException();
+        } else if (name.isEmpty()) {
             throw new NameEmptyException();
-        }else{
+        } else {
             this.name = name;
         }
     }
 
     public void setContent(String content) throws ContentToLongException {
-        if( content.length() > MAXIMUM_CONTENT_LENGTH){
+        if (content.length() > MAXIMUM_CONTENT_LENGTH) {
             throw new ContentToLongException(content.length());
-        }else{
+        } else {
             this.content = content;
         }
     }

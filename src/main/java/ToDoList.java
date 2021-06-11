@@ -9,7 +9,7 @@ public class ToDoList {
     private final ArrayList<Item> itemList;
 
     public ToDoList() {
-        this( new ArrayList<>(MAXIMUM_ITEM_LIST_SIZE) );
+        this(new ArrayList<>(MAXIMUM_ITEM_LIST_SIZE));
     }
 
     public ToDoList(ArrayList<Item> itemList) {
@@ -17,29 +17,29 @@ public class ToDoList {
     }
 
     public void addItem(Item item) throws ItemsCapacityException, ItemNameExistException, TimeBetweenInsertionException {
-        if(itemList.size() >= MAXIMUM_ITEM_LIST_SIZE){
+        if (itemList.size() >= MAXIMUM_ITEM_LIST_SIZE) {
             throw new ItemsCapacityException();
         }
 
         long minimumTime = Long.MAX_VALUE;
-        for (Item i:itemList) {
-            if( i.getName().equals( item.getName())){
+        for (Item i : itemList) {
+            if (i.getName().equals(item.getName())) {
                 throw new ItemNameExistException(i.getName());
-            }else{
+            } else {
                 long time = i.getCreationDate().until(item.getCreationDate(), ChronoUnit.MINUTES);
-                if(time < minimumTime){
+                if (time < minimumTime) {
                     minimumTime = time;
                 }
             }
         }
 
-        if( minimumTime < MINIMUM_CREATION_TIME){
+        if (minimumTime < MINIMUM_CREATION_TIME) {
             throw new TimeBetweenInsertionException();
         }
         itemList.add(item);
     }
 
-    public boolean shouldSendEmail(){
+    public boolean shouldSendEmail() {
         return itemList.size() == ITEM_LIST_SIZE_EMAIL_TRIGGER;
     }
 
