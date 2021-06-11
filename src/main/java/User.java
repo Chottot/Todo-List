@@ -59,7 +59,10 @@ public class User {
     }
 
     public void setFirstName(@NotNull String firstName) throws FirstNameEmptyException {
-        if( firstName.isEmpty()){
+        if(firstName == null){
+            throw new IllegalArgumentException();
+        }
+        else if( firstName.isEmpty()){
             throw new FirstNameEmptyException();
         }else{
             this.firstName = firstName;
