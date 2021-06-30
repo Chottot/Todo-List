@@ -25,7 +25,7 @@ public class Item {
     }
 
     public void setContent(String content) throws ContentToLongException {
-        if (content.length() > MAXIMUM_CONTENT_LENGTH*2) {
+        if (content.length() > MAXIMUM_CONTENT_LENGTH) {
             throw new ContentToLongException(content.length());
         } else {
             this.content = content;
