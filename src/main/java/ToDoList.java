@@ -7,7 +7,7 @@ public class ToDoList {
     public static final short ITEM_LIST_SIZE_EMAIL_TRIGGER = 8;
 
     private final ArrayList<Item> itemList;
-    //test
+    //test2
 
     public ToDoList() {
         this(new ArrayList<>(MAXIMUM_ITEM_LIST_SIZE));
