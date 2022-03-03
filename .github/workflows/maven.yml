@@ -37,4 +37,4 @@ jobs:
         java-version: '17'
         distribution: 'adopt'
     - name: Test with Maven
-      run: mvn -B test --file pom.xml
+      run: mvn -B surefire:test --file pom.xml
